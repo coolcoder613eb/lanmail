@@ -1,0 +1,2 @@
+# lanmail
+Simplified Lan Email
