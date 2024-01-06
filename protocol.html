@@ -1,0 +1,56 @@
+<h1>Lan Mail Protocol</h1>
+<h2>Connection</h2>
+<h3>Request (client)</h3>
+<pre><code>AUTH USER &lt;username&gt;
+AUTH PASSWD &lt;password&gt;
+</code></pre>
+<h3>Response (server)</h3>
+<p>Valid:</p>
+<pre><code>AUTH ACCEPTED
+</code></pre>
+<p>Invalid:</p>
+<pre><code>AUTH REJECTED
+</code></pre>
+<h3>Response (server) (If new messages for client)</h3>
+<h2>Send</h2>
+<h3>Request (client)</h3>
+<pre><code>SEND &lt;message length in bytes&gt;
+&lt;message content&gt;
+TO &lt;user&gt;
+</code></pre>
+<h3>Response (server)</h3>
+<p>Success:</p>
+<pre><code>SEND OK
+</code></pre>
+<p>Failure:</p>
+<pre><code>SEND FAILED
+</code></pre>
+<h2>Receive</h2>
+<h3>If the target is connected to the server:</h3>
+<h4>Message (server)</h4>
+<pre><code>NEW
+</code></pre>
+<h3>When the client receives NEW:</h3>
+<h4>Request (client)</h4>
+<pre><code>GET
+</code></pre>
+<h4>Response (server)</h4>
+<p>For each message server has for client</p>
+<pre><code>HAVE &lt;message id&gt;
+</code></pre>
+<h4>Response (client)</h4>
+<h5>If client has a message with that id</h5>
+<pre><code>HAVE YES
+</code></pre>
+<p>Server then goes to next message</p>
+<h5>If client does not have a message with that id</h5>
+<pre><code>HAVE NO
+</code></pre>
+<h5>Response (server)</h5>
+<pre><code>MESSAGE &lt;message id&gt;
+SIZE &lt;message length in bytes&gt;
+&lt;message content&gt;
+FROM &lt;user&gt;
+TO &lt;user&gt;
+TIME &lt;timestamp&gt;
+</code></pre>
