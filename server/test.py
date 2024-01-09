@@ -39,9 +39,9 @@ print(f"Server Response: {response}")
 time.sleep(1)
 send_message("GET")
 response = receive_response()
-
+print(response)
 if "HAVE" in response:
-    # Assume there is a message with ID 1
+    # Assume there is a message with ID 0
     send_message("HAVE YES")
     response = receive_response()
     if "MESSAGE" in response:

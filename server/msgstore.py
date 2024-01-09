@@ -6,10 +6,10 @@ PATH = "mail"
 users = list(getauth().keys())
 
 
-def addmsg(to, msg):  # will return False if no such user found
+def addmsg(to, fro, msg, time):  # will return False if no such user found
     if to in users:
         msgs = readmsgs(to)
-        msgs.append(msg)
+        msgs.append({"to": to, "from": fro, "text": msg, "time": time})
         writemsgs(to, msgs)
         return True
     else:

@@ -1,5 +1,6 @@
 from auth import authenticate
 import msgstore
+from time import asctime
 
 
 class Client:
@@ -19,8 +20,6 @@ class Client:
             else:
                 self.send_msg("AUTH REJECTED")
 
-        # TODO: check for new messages
-
         # Main loop
         while True:
             line = self.waitfor()
@@ -34,10 +33,20 @@ class Client:
                     if len(tokens) == 2:
                         if tokens[0] == "TO":
                             print(tokens[1])
-                            if msgstore.addmsg(tokens[1], msg):
+                            if msgstore.addmsg(tokens[1], user, msg, asctime()):
                                 self.send_msg("SEND OK")
                             else:
                                 self.send_msg("SEND FAILED")
+            elif len(tokens) == 1:
+                if tokens[0] == "GET":
+                    messages = msgstore.readmsgs(user)
+                    for index, message in enumerate(messages):
+                        print(index, message)
+                        self.send_msg("HAVE " + str(index))
+                        self.send_msg("MESSAGE " + str(index))
+                        self.send_msg("SIZE " + str(len(message['text'].encode())))
+                        self.wfile.write(message['text'].encode())
+                        self.send_msg("FROM " + user)
 
     def send_msg(self, text):
         self.wfile.write(text.encode())
